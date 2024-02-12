@@ -1,0 +1,6 @@
+huggingface-hub
+datasets
+transformers
+torch
+evaluate
+tensorboard
