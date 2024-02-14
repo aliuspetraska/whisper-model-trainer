@@ -63,9 +63,6 @@ class ModelTrainerService:
 
         self.model = WhisperForConditionalGeneration.from_pretrained("openai/whisper-large-v2", token=True)
 
-        # Multi GPU training in a single process (DataParallel)
-        self.model = torch.nn.parallel.DataParallel(self.model, device_ids=[1, 2, 3], dim=0, output_device=0)
-
         self.data_collator = DataCollatorSpeechSeq2SeqWithPadding(processor=self.processor,
                                                                   decoder_start_token_id=self.model.config.decoder_start_token_id)
 
@@ -151,6 +148,9 @@ class ModelTrainerService:
         )
 
         # Training
+
+        # Multi GPU training in a single process (DataParallel)
+        trainer = torch.nn.parallel.DataParallel(trainer, device_ids=[1, 2, 3], dim=0, output_device=0)
 
         trainer.train()
 
