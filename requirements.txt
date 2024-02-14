@@ -8,3 +8,4 @@ evaluate
 tensorboard
 jiwer
 accelerate
+soundfile
