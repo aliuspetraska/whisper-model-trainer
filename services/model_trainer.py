@@ -99,7 +99,9 @@ class ModelTrainerService:
 
                 self.common_voice.save_to_disk(os.path.join("./storage", "datasets"))
             except Exception as e:
+                print("---")
                 print(e)
+                print("---")
 
     def train(self):
         self.model.config.forced_decoder_ids = None
