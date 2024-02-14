@@ -137,6 +137,9 @@ class ModelTrainerService:
 
         # Initialize a trainer.
 
+        # Multi GPU training in a single process (DataParallel)
+        self.model = torch.nn.parallel.DataParallel(self.model, device_ids=[0, 1, 2, 3], dim=0)
+
         trainer = Seq2SeqTrainer(
             model=self.model,
             args=training_args,

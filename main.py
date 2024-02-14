@@ -1,8 +1,13 @@
+import torch
+
 from services.model_trainer import ModelTrainerService
 
 
 def main():
     model_trainer = ModelTrainerService()
+
+    num_gpus = torch.cuda.device_count()
+    print('num_gpus: ', num_gpus)
 
     try:
         print("login")
