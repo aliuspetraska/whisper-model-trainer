@@ -1,5 +1,5 @@
 # https://github.com/huggingface/transformers/blob/main/examples/pytorch/speech-recognition/run_speech_recognition_seq2seq.py
-
+import logging
 import os
 
 import evaluate
@@ -10,6 +10,8 @@ from transformers import WhisperFeatureExtractor, WhisperTokenizer, WhisperProce
     Seq2SeqTrainingArguments, Seq2SeqTrainer
 
 from services.data_collator import DataCollatorSpeechSeq2SeqWithPadding
+
+logging.basicConfig(level=logging.DEBUG, force=True)
 
 
 class ModelTrainerService:
