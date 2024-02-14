@@ -5,9 +5,13 @@ def main():
     model_trainer = ModelTrainerService()
 
     try:
+        print("login")
         model_trainer.login()
+        print("load")
         model_trainer.load()
+        print("get_data_source")
         model_trainer.get_data_source()
+        print("train")
         model_trainer.train()
     except KeyboardInterrupt:
         print("program interrupted by user")
