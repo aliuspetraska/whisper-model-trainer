@@ -10,6 +10,8 @@ from transformers import WhisperFeatureExtractor, WhisperTokenizer, WhisperProce
 
 from services.data_collator import DataCollatorSpeechSeq2SeqWithPadding
 
+os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
+
 
 class ModelTrainerService:
     def __init__(self):
@@ -49,6 +51,8 @@ class ModelTrainerService:
         login(token=self.hf_token)
 
     def load(self):
+        torch.cuda.empty_cache()
+
         self.feature_extractor = WhisperFeatureExtractor.from_pretrained("openai/whisper-large-v2", token=True)
 
         self.tokenizer = WhisperTokenizer.from_pretrained("openai/whisper-large-v2", language="Lithuanian",
@@ -97,6 +101,10 @@ class ModelTrainerService:
         self.processor.tokenizer.save_pretrained(os.path.join("./storage", "pretrained"))
 
         # https://huggingface.co/docs/transformers/main_classes/trainer#transformers.Seq2SeqTrainingArguments
+
+        # UserWarning: Was asked to gather along dimension 0, but all input tensors were scalars; will instead unsqueeze and return a vector.
+        # CUDA out of memory. Tried to allocate 470.00 MiB. GPU 0 has a total capacity of 21.99 GiB of which 73.88 MiB is free. Including non-PyTorch memory, this process has 21.90 GiB memory in use. Of the allocated memory 20.74 GiB is allocated by PyTorch, and 755.52 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables
+        # `use_cache = True` is incompatible with gradient checkpointing. Setting `use_cache = False`...
 
         training_args = Seq2SeqTrainingArguments(
             output_dir=os.path.join("./storage", "output"),
