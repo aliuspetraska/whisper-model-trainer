@@ -109,8 +109,8 @@ class ModelTrainerService:
 
         training_args = Seq2SeqTrainingArguments(
             output_dir=os.path.join("./storage", "output"),
-            per_device_train_batch_size=1,  # 8
-            per_device_eval_batch_size=1,  # 8
+            per_device_train_batch_size=8,  # 8
+            per_device_eval_batch_size=8,  # 8
             gradient_accumulation_steps=1,  # 1
             learning_rate=5e-5,  # 5e-5
             warmup_steps=500,  # 0
