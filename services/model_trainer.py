@@ -5,9 +5,9 @@ import os
 import evaluate
 import torch
 from datasets import DatasetDict, load_dataset, Audio
+from huggingface_hub import login
 from transformers import WhisperFeatureExtractor, WhisperTokenizer, WhisperProcessor, WhisperForConditionalGeneration, \
     Seq2SeqTrainingArguments, Seq2SeqTrainer
-from huggingface_hub import login
 
 from services.data_collator import DataCollatorSpeechSeq2SeqWithPadding
 
@@ -77,12 +77,13 @@ class ModelTrainerService:
                 print("1")
 
                 self.common_voice["train"] = load_dataset("mozilla-foundation/common_voice_16_1", "lt",
-                                                          split="train+validation", token=True, trust_remote_code=True)
+                                                          split="train+validation", token=self.hf_token,
+                                                          trust_remote_code=True)
 
                 print("2")
 
                 self.common_voice["test"] = load_dataset("mozilla-foundation/common_voice_16_1", "lt", split="test",
-                                                         token=True, trust_remote_code=True)
+                                                         token=self.hf_token, trust_remote_code=True)
 
                 print("3")
 
