@@ -9,3 +9,4 @@ tensorboard
 jiwer
 accelerate
 soundfile
+librosa
