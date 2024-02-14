@@ -77,13 +77,14 @@ class ModelTrainerService:
                 print("1")
 
                 self.common_voice["train"] = load_dataset("mozilla-foundation/common_voice_16_1", "lt",
-                                                          split="train+validation", token=self.hf_token,
+                                                          split="train", use_auth_token=True, token=self.hf_token,
                                                           trust_remote_code=True)
 
                 print("2")
 
                 self.common_voice["test"] = load_dataset("mozilla-foundation/common_voice_16_1", "lt", split="test",
-                                                         token=self.hf_token, trust_remote_code=True)
+                                                         token=self.hf_token, use_auth_token=True,
+                                                         trust_remote_code=True)
 
                 print("3")
 
