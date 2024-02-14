@@ -75,8 +75,18 @@ class ModelTrainerService:
                                                       split="train+validation", token=True, trust_remote_code=True,
                                                       num_proc=self.num_proc)
 
+            self.common_voice["train"] = self.common_voice["train"].remove_columns(
+                ["accent", "age", "client_id", "down_votes", "gender", "locale", "path", "segment", "up_votes"])
+
+            # ---
+
             self.common_voice["test"] = load_dataset("mozilla-foundation/common_voice_16_1", "lt", split="test",
                                                      token=True, trust_remote_code=True, num_proc=self.num_proc)
+
+            self.common_voice["test"] = self.common_voice["test"].remove_columns(
+                ["accent", "age", "client_id", "down_votes", "gender", "locale", "path", "segment", "up_votes"])
+
+            # ---
 
             self.common_voice = self.common_voice.cast_column("audio", Audio(sampling_rate=16000))
 
