@@ -1,4 +1,6 @@
 huggingface-hub
+torchvision
+torchaudio
 datasets
 transformers
 torch
