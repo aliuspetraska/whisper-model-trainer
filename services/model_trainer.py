@@ -61,8 +61,7 @@ class ModelTrainerService:
         self.processor = WhisperProcessor.from_pretrained("openai/whisper-large-v2", language="Lithuanian",
                                                           task="transcribe", token=True)
 
-        self.model = WhisperForConditionalGeneration.from_pretrained("openai/whisper-large-v2", token=True).to(
-            self.device)
+        self.model = WhisperForConditionalGeneration.from_pretrained("openai/whisper-large-v2", token=True)
 
         self.data_collator = DataCollatorSpeechSeq2SeqWithPadding(processor=self.processor,
                                                                   decoder_start_token_id=self.model.config.decoder_start_token_id)
