@@ -73,30 +73,33 @@ class ModelTrainerService:
         if os.path.exists(os.path.join("./storage", "datasets", "dataset_dict.json")):
             self.common_voice = self.common_voice.load_from_disk(os.path.join("./storage", "datasets"))
         else:
-            print("1")
+            try:
+                print("1")
 
-            self.common_voice["train"] = load_dataset("mozilla-foundation/common_voice_16_1", "lt",
-                                                      split="train+validation", token=True, trust_remote_code=True,
-                                                      num_proc=self.num_proc)
+                self.common_voice["train"] = load_dataset("mozilla-foundation/common_voice_16_1", "lt",
+                                                          split="train+validation", token=True, trust_remote_code=True,
+                                                          num_proc=self.num_proc)
 
-            print("2")
+                print("2")
 
-            self.common_voice["test"] = load_dataset("mozilla-foundation/common_voice_16_1", "lt", split="test",
-                                                     token=True, trust_remote_code=True, num_proc=self.num_proc)
+                self.common_voice["test"] = load_dataset("mozilla-foundation/common_voice_16_1", "lt", split="test",
+                                                         token=True, trust_remote_code=True, num_proc=self.num_proc)
 
-            print("3")
+                print("3")
 
-            self.common_voice = self.common_voice.cast_column("audio", Audio(sampling_rate=16000))
+                self.common_voice = self.common_voice.cast_column("audio", Audio(sampling_rate=16000))
 
-            print("4")
+                print("4")
 
-            self.common_voice = self.common_voice.map(self.__prepare_dataset,
-                                                      remove_columns=self.common_voice.column_names["train"],
-                                                      num_proc=self.num_proc)
+                self.common_voice = self.common_voice.map(self.__prepare_dataset,
+                                                          remove_columns=self.common_voice.column_names["train"],
+                                                          num_proc=self.num_proc)
 
-            print("5")
+                print("5")
 
-            self.common_voice.save_to_disk(os.path.join("./storage", "datasets"))
+                self.common_voice.save_to_disk(os.path.join("./storage", "datasets"))
+            except Exception as e:
+                print(e)
 
     def train(self):
         self.model.config.forced_decoder_ids = None
