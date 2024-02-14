@@ -102,8 +102,16 @@ class ModelTrainerService:
 
         training_args = Seq2SeqTrainingArguments(
             output_dir=os.path.join("./storage", "output"),
-
-            evaluation_strategy="steps",
+            per_device_train_batch_size=16,  # 8
+            per_device_eval_batch_size=16,  # 8
+            gradient_accumulation_steps=4,  # 1
+            learning_rate=5e-5,  # 5e-5
+            warmup_steps=500,  # 0
+            num_train_epochs=0.5,  # 3.0
+            # The `max_length` to use on each evaluation loop when `predict_with_generate=True`.
+            # Will default to the `max_length` value of the model configuration.
+            generation_max_length=self.model.config.max_length,
+            evaluation_strategy="epoch",
             gradient_checkpointing=True,
             gradient_checkpointing_kwargs={"use_reentrant": False},
             predict_with_generate=True,
@@ -113,11 +121,12 @@ class ModelTrainerService:
             load_best_model_at_end=True,
             metric_for_best_model="wer",
             greater_is_better=False,
-            save_total_limit=1,
-
-            fp16=False,
-
+            save_total_limit=2,
+            fp16=True,
+            save_strategy="epoch",
             push_to_hub=False,
+            report_to=["tensorboard"],
+            save_safetensors=False,
         )
 
         # Initialize a trainer.
