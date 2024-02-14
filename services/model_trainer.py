@@ -17,7 +17,7 @@ logging.basicConfig(level=logging.DEBUG, force=True)
 class ModelTrainerService:
     def __init__(self):
         self.hf_token = "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"
-        self.num_proc = 1
+        self.num_proc = None
         self.feature_extractor = None
         self.data_collator = None
         self.common_voice = None
@@ -68,49 +68,24 @@ class ModelTrainerService:
         self.metric = evaluate.load("wer")
 
     def get_data_source(self):
-        print("0")
-
         self.common_voice = DatasetDict()
 
         if os.path.exists(os.path.join("./storage", "datasets", "dataset_dict.json")):
             self.common_voice = self.common_voice.load_from_disk(os.path.join("./storage", "datasets"))
         else:
-            try:
-                print("1")
+            self.common_voice["train"] = load_dataset("mozilla-foundation/common_voice_16_1", "lt",
+                                                      split="train+validation", token=True, trust_remote_code=True)
 
-                test_a = load_dataset("mozilla-foundation/common_voice_16_1", "lt",
-                                                          split="train+validation",
-                                                          token=True, trust_remote_code=True,
-                                                          download_mode="force_redownload")
+            self.common_voice["test"] = load_dataset("mozilla-foundation/common_voice_16_1", "lt", split="test",
+                                                     token=True, trust_remote_code=True)
 
-                self.common_voice["train"] = load_dataset("mozilla-foundation/common_voice_16_1", "lt",
-                                                          split="train+validation",
-                                                          token=True, trust_remote_code=True,
-                                                          download_mode="force_redownload")
+            self.common_voice = self.common_voice.cast_column("audio", Audio(sampling_rate=16000))
 
-                print("2")
+            self.common_voice = self.common_voice.map(self.__prepare_dataset,
+                                                      remove_columns=self.common_voice.column_names["train"],
+                                                      num_proc=self.num_proc)
 
-                self.common_voice["test"] = load_dataset("mozilla-foundation/common_voice_16_1", "lt", split="test",
-                                                         token=True, trust_remote_code=True,
-                                                         download_mode="force_redownload")
-
-                print("3")
-
-                self.common_voice = self.common_voice.cast_column("audio", Audio(sampling_rate=16000))
-
-                print("4")
-
-                self.common_voice = self.common_voice.map(self.__prepare_dataset,
-                                                          remove_columns=self.common_voice.column_names["train"],
-                                                          num_proc=self.num_proc)
-
-                print("5")
-
-                self.common_voice.save_to_disk(os.path.join("./storage", "datasets"))
-            except Exception as e:
-                print("---")
-                print(e)
-                print("---")
+            self.common_voice.save_to_disk(os.path.join("./storage", "datasets"))
 
     def train(self):
         self.model.config.forced_decoder_ids = None
