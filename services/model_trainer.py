@@ -11,6 +11,7 @@ from transformers import WhisperFeatureExtractor, WhisperTokenizer, WhisperProce
 from services.data_collator import DataCollatorSpeechSeq2SeqWithPadding
 
 os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
+os.environ["CUDA_VISIBLE_DEVICES"] = "0,1,2,3"
 
 
 class ModelTrainerService:
