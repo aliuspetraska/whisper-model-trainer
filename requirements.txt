@@ -10,3 +10,5 @@ jiwer
 accelerate
 soundfile
 librosa
+deepspeed
+gradio
