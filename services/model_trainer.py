@@ -136,7 +136,8 @@ class ModelTrainerService:
             save_strategy="epoch",
             push_to_hub=False,
             report_to=["tensorboard"],
-            save_safetensors=False
+            save_safetensors=False,
+            deepspeed=os.path.join("./ds_config.json")
         )
 
         # Initialize a trainer.
@@ -152,6 +153,8 @@ class ModelTrainerService:
         )
 
         # Training
+
+        # deepspeed --num_gpus 4 --num_nodes 1 --deepspeed_config ./deepspeed_config ./main.py
 
         trainer.train()
 
