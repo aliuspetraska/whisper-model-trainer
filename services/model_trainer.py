@@ -136,8 +136,7 @@ class ModelTrainerService:
             save_strategy="epoch",
             push_to_hub=False,
             report_to=["tensorboard"],
-            save_safetensors=False,
-            deepspeed="ds_config.json"
+            save_safetensors=False
         )
 
         # Initialize a trainer.
