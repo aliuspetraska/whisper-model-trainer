@@ -136,7 +136,7 @@ class ModelTrainerService:
             save_strategy="epoch",
             push_to_hub=False,
             report_to=["tensorboard"],
-            save_safetensors=False,
+            save_safetensors=True,
             # https://huggingface.co/docs/transformers/main_classes/deepspeed#optimizer
             deepspeed=os.path.join("./ds_config.json")
         )
