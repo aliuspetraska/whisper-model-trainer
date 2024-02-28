@@ -1,4 +1,6 @@
 /**/__pycache__/
 /**/.DS_Store
-/.idea/
-/storage/
+
+.idea/
+storage/
+venv/

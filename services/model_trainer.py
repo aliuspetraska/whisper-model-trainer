@@ -155,6 +155,7 @@ class ModelTrainerService:
 
         # Training
 
+        # NVIDIA_TF32_OVERRIDE=0
         # deepspeed --num_gpus 4 --num_nodes 1 main.py
         trainer.train()
 
