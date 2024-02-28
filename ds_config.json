@@ -3,6 +3,16 @@
   "gradient_clipping": "auto",
   "train_batch_size": "auto",
   "train_micro_batch_size_per_gpu": "auto",
+  "optimizer": {
+    "type": "Adam",
+    "params": {
+      "adam_w_mode": true,
+      "lr": "auto",
+      "betas": "auto",
+      "eps": "auto",
+      "weight_decay": "auto"
+    }
+  },
   "fp16": {
     "enabled": "auto",
     "loss_scale": 0,
