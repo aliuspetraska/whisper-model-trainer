@@ -114,12 +114,12 @@ class ModelTrainerService:
         # `use_cache = True` is incompatible with gradient checkpointing. Setting `use_cache = False`...
 
         training_args = Seq2SeqTrainingArguments(
-            output_dir=os.path.join("./storage", "output"),
+            output_dir=os.path.join("./storage", "training"),
             per_device_train_batch_size=8,  # 8
             per_device_eval_batch_size=8,  # 8
             gradient_accumulation_steps=1,  # 1
             learning_rate=5e-5,  # 5e-5
-            warmup_steps=500,  # 0
+            warmup_steps=0,  # 0
             num_train_epochs=1,  # 3.0
             # The `max_length` to use on each evaluation loop when `predict_with_generate=True`.
             # Will default to the `max_length` value of the model configuration.
@@ -160,6 +160,12 @@ class ModelTrainerService:
 
         # NVIDIA_TF32_OVERRIDE=0
         # deepspeed --num_gpus 4 --num_nodes 1 main.py
+        # deepspeed --num_gpus 4 main.py
+
+        # tmux new -s trainer
+        # tmux a -t trainer
+
+        # NCCL_DEBUG=INFO deepspeed --num_nodes=2 --num_gpus=2 finetune.py
 
         logging.info("Starting training.")
 
