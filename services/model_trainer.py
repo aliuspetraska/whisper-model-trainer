@@ -1,4 +1,5 @@
 # https://github.com/huggingface/transformers/blob/main/examples/pytorch/speech-recognition/run_speech_recognition_seq2seq.py
+import logging
 import os
 
 import evaluate
@@ -12,6 +13,8 @@ from services.data_collator import DataCollatorSpeechSeq2SeqWithPadding
 
 os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
 os.environ["CUDA_VISIBLE_DEVICES"] = "0,1,2,3"
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s][%(name)s] %(message)s', force=True)
 
 
 class ModelTrainerService:
@@ -117,7 +120,7 @@ class ModelTrainerService:
             gradient_accumulation_steps=1,  # 1
             learning_rate=5e-5,  # 5e-5
             warmup_steps=500,  # 0
-            num_train_epochs=0.5,  # 3.0
+            num_train_epochs=1,  # 3.0
             # The `max_length` to use on each evaluation loop when `predict_with_generate=True`.
             # Will default to the `max_length` value of the model configuration.
             generation_max_length=self.model.config.max_length,
@@ -157,10 +160,21 @@ class ModelTrainerService:
 
         # NVIDIA_TF32_OVERRIDE=0
         # deepspeed --num_gpus 4 --num_nodes 1 main.py
+
+        logging.info("Starting training.")
+
         trainer.train()
+
+        logging.info("Training completed.")
 
         # Saving
 
+        logging.info("Saving model.")
+
         trainer.save_model(os.path.join("./storage", "output"))
 
+        logging.info("Saving tokenizer.")
+
         self.processor.tokenizer.save_pretrained(os.path.join("./storage", "output"))
+
+        logging.info("Completed")

@@ -1,6 +1,10 @@
+import logging
+
 import torch
 
 from services.model_trainer import ModelTrainerService
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s][%(name)s] %(message)s', force=True)
 
 
 def main():
