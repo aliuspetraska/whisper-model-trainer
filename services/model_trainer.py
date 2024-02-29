@@ -4,8 +4,9 @@ import os
 
 import evaluate
 import torch
-from datasets import DatasetDict, load_dataset, Audio, IterableDatasetDict
+from datasets import DatasetDict, load_dataset, Audio
 from huggingface_hub import login
+from torchinfo import summary
 from transformers import WhisperFeatureExtractor, WhisperTokenizer, WhisperProcessor, WhisperForConditionalGeneration, \
     Seq2SeqTrainingArguments, Seq2SeqTrainer
 
@@ -65,6 +66,8 @@ class ModelTrainerService:
                                                           task="transcribe", token=True)
 
         self.model = WhisperForConditionalGeneration.from_pretrained("openai/whisper-large-v2", token=True)
+
+        summary(self.model)
 
         self.data_collator = DataCollatorSpeechSeq2SeqWithPadding(processor=self.processor,
                                                                   decoder_start_token_id=self.model.config.decoder_start_token_id)
@@ -165,7 +168,7 @@ class ModelTrainerService:
         # tmux new -s trainer
         # tmux a -t trainer
 
-        # NCCL_DEBUG=INFO deepspeed --num_nodes=2 --num_gpus=2 finetune.py
+        # NCCL_DEBUG=INFO deepspeed --num_nodes=4 --num_gpus=4 main.py
 
         logging.info("Starting training.")
 

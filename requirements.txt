@@ -12,3 +12,4 @@ soundfile
 librosa
 deepspeed
 gradio
+torchinfo
