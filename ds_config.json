@@ -4,7 +4,7 @@
   "train_batch_size": "auto",
   "train_micro_batch_size_per_gpu": "auto",
   "optimizer": {
-    "type": "Adam",
+    "type": "AdamW",
     "params": {
       "adam_w_mode": true,
       "lr": "auto",
