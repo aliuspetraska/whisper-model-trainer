@@ -12,9 +12,6 @@ from transformers import WhisperFeatureExtractor, WhisperTokenizer, WhisperProce
 
 from services.data_collator import DataCollatorSpeechSeq2SeqWithPadding
 
-os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
-os.environ["CUDA_VISIBLE_DEVICES"] = "0,1,2,3"
-
 logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s][%(name)s] %(message)s', force=True)
 
 
@@ -142,7 +139,7 @@ class ModelTrainerService:
             save_strategy="epoch",
             push_to_hub=False,
             report_to=["tensorboard"],
-            save_safetensors=True,
+            save_safetensors=False,
             # https://huggingface.co/docs/transformers/main_classes/deepspeed#optimizer
             deepspeed=os.path.join("./ds_config.json")
         )
