@@ -17,7 +17,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s][%(na
 
 class ModelTrainerService:
     def __init__(self):
-        self.hf_token = "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"
+        self.hf_token = "<hf_token>"
         self.num_proc = None
         self.feature_extractor = None
         self.data_collator = None
